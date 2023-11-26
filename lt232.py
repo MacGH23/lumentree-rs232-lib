@@ -10,7 +10,7 @@
 #                                                                          #
 ############################################################################
 
-# Controlling the Lumetree devices LT 600 / 1000 / 2000
+# Controlling the Lumetree devices Lumentree 600 / 1000 / 2000 with software and PCB from ask4it.de
 # Should also work for Trucki-Platine 
 # and also not fully tested.
 # Use at your own risk !  

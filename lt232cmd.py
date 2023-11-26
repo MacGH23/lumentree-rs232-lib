@@ -16,7 +16,7 @@ import atexit
 from lt232 import *
 
 
-# "" = default = "/dev/ttyUSB00"
+# "" = default = "/dev/ttyUSB0"
 # if you have another device specify here
 DEVPATH = "" 
 USEDIDADR = 1
