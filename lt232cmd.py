@@ -7,7 +7,7 @@
 
 # What is missing:
 
-# macGH 26.11.2023  Version 0.2.3
+# macGH 26.11.2023  Version 0.1.0
 
 import os
 import sys
