@@ -67,12 +67,17 @@ logpath = "lt232.log"
 class lt232:
 
     def __init__(self, devpath, idadr, loglevel):
+        #init with default
+        self.devpath  = "/dev/ttyUSB0" #just try if is is the common devpath
+        self.idadr    = 1              #just try if is is the common idadr
+        self.loglevel = 20             #just use info as default
+        
+        if devpath  != "": self.devpath    = devpath
+        if idadr    != "": self.idadr      = idadr
+        if loglevel != "": self.loglevel   = loglevel
+        
         logging.basicConfig(level=loglevel, encoding='utf-8')
         logging.info("Init lt232 class")
-        self.devpath = "/dev/ttyUSB0" #just try if is is the common devpath
-        self.idadr   = 1              #just try if is is the common idadr
-        if devpath == "": self.devpath = "/dev/ttyUSB0" #just try if is is the common devpath
-        if idadr   == "": self.idadr   = 1              #just try if is is the common idadr
 
     def lt232_open(self):
         logging.info("open modbus interface")
