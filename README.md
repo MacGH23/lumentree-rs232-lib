@@ -1,42 +1,24 @@
 # meanwell-can-lib
-Tool to control Meanwell CAN Devices Charger / Power Supplys and Charger via CAN Bus
+Tool to control Lumentree inverter 600/1000/2000 with software/PCB from ask4it.de
+Should alo work with SUN Invertes with Trucki PCB
 
-Tested with the Version BIC-2200-CAN-24 and NPB-1200-24 PSU/Charger
+Tested only with Lumentree 600g2 
 
 Please note:  
-This python lib and tool controls read and write settings to the CAN device 
+This python lib and tool controls read and write settings to Lumentree devices via RS232 using minimalmodbus
 It is not yet complete and also not fully tested. 
 Do not use without monitoring the device. 
 There is no error handling yet !!!
 Use at your own risk !
 
-mwcancmd.py sample application
+lt232cmd.py sample application
 
-	   Usage: ./mwcancmd.py parameter value
+	   Usage: ./lt232cmd.py parameter value
        To use a standalone cmd to the mw device
 	   
-       on                   -- output on
-       off                  -- output off
-
-       cvread               -- read charge voltage setting
-       cvset <value>        -- set charge voltage
-       ccread               -- read charge current setting
-       ccset <value>        -- set charge current
-
-       dvread               -- read discharge voltage setting
-       dvset <value>        -- set discharge voltage
-       dcread               -- read discharge current setting
-       dcset <value>        -- set discharge current
-
+       setwatt              -- set WATT outout
        vread                -- read DC voltage
-       cread                -- read DC current
        acvread              -- read AC voltage
+       tempread             -- read internal temperature 
 
-       charge               -- set direction charge battery
-       discharge            -- set direction discharge battery
-
-       tempread             -- read power supply temperature
-
-       <value> = amps oder volts * 100 --> 25,66V = 2566 
-        
 - All scripts are without any warranty. Use at your own risk
