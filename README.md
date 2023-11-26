@@ -1,5 +1,6 @@
 # meanwell-can-lib
 Tool to control Lumentree inverter 600/1000/2000 with software/PCB from ask4it.de
+
 Should also work with SUN Invertes with Trucki PCB
 
 Tested only with Lumentree 600g2 
