@@ -21,5 +21,6 @@ lt232cmd.py sample application
        vread                -- read DC voltage
        acvread              -- read AC voltage
        tempread             -- read internal temperature 
+       readwatt             -- read WATT outout
 
 - All scripts are without any warranty. Use at your own risk

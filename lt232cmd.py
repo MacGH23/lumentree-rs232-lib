@@ -8,6 +8,7 @@
 # What is missing:
 
 # macGH 26.11.2023  Version 0.1.0
+# macGH 27.11.2023  Version 0.1.1: added watt read out register 107
 
 import os
 import sys
@@ -16,7 +17,7 @@ import atexit
 from lt232 import *
 
 
-# "" = default = "/dev/ttyUSB0"
+# "" = default = "/dev/ttyUSB00"
 # if you have another device specify here
 DEVPATH = "" 
 USEDIDADR = 1
@@ -51,7 +52,7 @@ def mwcan_commands():
     print("       acvread              -- read AC voltage")
     print("       tempread             -- read power supply temperature")
     print("")
-    print("       Version 0.1.0 ")
+    print("       Version 0.1.1 ")
 
 
 #########################################
@@ -87,6 +88,14 @@ def setwatt(val):
     v = lt.set_watt_out(val) 
     return v
 
+def readwatt():
+    # print ("Set output in WATT")
+    # Set output in Watt
+    
+    v = lt.read_watt_out() 
+    print(v)
+    return v
+
 def command_line_argument():
     if len (sys.argv) == 1:
         print ("")
@@ -99,6 +108,7 @@ def command_line_argument():
     elif sys.argv[1] in ['acvread']  : acvread()
     elif sys.argv[1] in ['tempread'] : tempread()
     elif sys.argv[1] in ['setwatt']  : setwatt(int(sys.argv[2]))
+    elif sys.argv[1] in ['readwatt'] : readwatt()
     else:
         print("")
         print("Unknown first argument '" + sys.argv[1] + "'")

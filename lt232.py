@@ -99,10 +99,11 @@ class lt232:
     # Read Write operation function
     def lt232_IO(self, regnr, wr, value):
         #Lumentree modbus addresses, differ from documentation ! 
-        #  40 = Set Watt in decimal, no reading  !
-        #  70 = AC Voltage  *0,1
-        #  94 = Temperature *0,1
-        # 109 = DC Voltage  *0,1
+        #  40 = Set Watt in decimal, no reading  ! Read see 107 
+        #  70 = AC Voltage    *0,1
+        #  94 = Temperature   *0,1
+        # 107 = Read Watt out *0,1
+        # 109 = DC Voltage    *0,1
 
         logging.debug("lt232_IO: " + str(regnr) + "-" + str(wr) + "-" + str(value))
         if wr == 0: #read
@@ -127,11 +128,11 @@ class lt232:
     #############################################################################
     # Operation function
     
-    def readtemp(self): #0=read, 1=set
-        logging.debug("read temperature of lumentree")
-        rval = self.lt232_IO(94,0,0)
-        logging.debug("Lumentree temperature: " + str(rval/10))
-        return (rval/10)
+
+    def set_watt_out(self,val):
+        logging.debug("write power out: " + str(val))
+        self.lt232_IO(40,1,val) #does only return 0
+        return val  #return the same value to signal OK
 
     def readACvoltage(self):
         logging.debug("read AC voltage of lumentree")
@@ -139,13 +140,20 @@ class lt232:
         logging.debug("AC voltage of lumentree: " + str(rval/10))
         return (rval/10)
 
+    def readtemp(self):
+        logging.debug("read temperature of lumentree")
+        rval = self.lt232_IO(94,0,0)
+        logging.debug("Lumentree temperature: " + str(rval/10))
+        return (rval/10)
+
+    def read_watt_out(self):
+        logging.debug("read power out")
+        rval = self.lt232_IO(107,0,0) #does only return 0
+        if(rval < 10): rval = 0 #check if lumentree is off <10 = off
+        return (rval/10)  
+
     def readDCvoltage(self):
         logging.debug("read AC voltage of lumentree")
         rval = self.lt232_IO(109,0,0)
         logging.debug("DC voltage of lumentree: " + str(rval/10))
         return (rval/10)
-
-    def set_watt_out(self,val): #0=read, 1=set
-        logging.debug("write power out: " + str(val))
-        self.lt232_IO(40,1,val) #does only return 0
-        return val  #return the same value to signal OK
