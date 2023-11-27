@@ -150,7 +150,7 @@ class lt232:
         logging.debug("read power out")
         rval = self.lt232_IO(107,0,0) #does only return 0
         if(rval < 10): rval = 0 #check if lumentree is off <10 = off
-        return (rval/10)  
+		return int(rval/10)     #return without decimals
 
     def readDCvoltage(self):
         logging.debug("read AC voltage of lumentree")
