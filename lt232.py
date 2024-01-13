@@ -10,7 +10,7 @@
 #                                                                          #
 ############################################################################
 
-# Controlling the Lumetree devices Lumentree 600 / 1000 / 2000 with software and PCB from ask4it.de
+# Controlling the Lumetree devices LT 600 / 1000 / 2000
 # Should also work for Trucki-Platine 
 # and also not fully tested.
 # Use at your own risk !  
@@ -29,9 +29,10 @@ import minimalmodbus
 
 #Lumentree modbus addresses, differ from documentation ! 
 #  40 = Set Watt in decimal, no reading  !
-#  70 = AC Voltage  *0,1
-#  94 = Temperature *0,1
-# 109 = DC Voltage  *0,1
+#  70 = AC Voltage    *0,1
+#  94 = Temperature   *0,1
+# 107 = Read Watt out *0,1
+# 109 = DC Voltage    *0,1
 
 ######################################################################################
 # Explanations
@@ -57,11 +58,6 @@ import minimalmodbus
 ######################################################################################
 
 
-######################################################################################
-# Logging using python logging 
-logpath = "lt232.log"
-
-
 #########################################
 ##class
 class lt232:
@@ -80,20 +76,25 @@ class lt232:
         logging.info("Init lt232 class")
 
     def lt232_open(self):
-        logging.info("open modbus interface")
+        logging.info("open serial interface")
         try:
             self.lt232 = minimalmodbus.Instrument(self.devpath, self.idadr) # port name, slave address (in decimal)
         except Exception as e:
             logging.error("Can not init Lumentree device: " + devpath + " address: " + idadr)
             logging.error("If device is correct, check if User is in dialout group !")
+            raise Exception("LUMENTREE DEVICE NOT FOUND")
 
         self.lt232.serial.baudrate = 9600   # Baudrate
         self.lt232.serial.timeout  = 1      # according Spec LT has a 1 Second timeout
         logging.debug(self.lt232)
 
     def lt232_close(self):
-        logging.info("close modbus interface")
-        self.lt232.serial.close() #Shutdown our interface
+        logging.info("close serial interface")
+        try:
+            self.lt232.serial.close() #Shutdown our interface
+        except Exception as e:
+            logging.error("Can not close Lumentree device")
+            raise Exception("LUMENTREE DEVICE CAN NOT BE CLOSED")
 
     #############################################################################
     # Read Write operation function
@@ -111,6 +112,7 @@ class lt232:
                 readvalue = self.lt232.read_register(regnr)  # Registernumber (number of decimals)
             except Exception as e:
                 logging.error("Exception during read operation !")
+                raise Exception(str(e))
                 return -1
             return readvalue
             
@@ -120,6 +122,7 @@ class lt232:
                 self.lt232.write_register(regnr, value)  # Registernumber, value, number of decimals for storage
             except Exception as e:
                 logging.error("Exception during write operation !")
+                raise Exception(str(e))
                 return -1
                 
             return value
@@ -128,7 +131,6 @@ class lt232:
     #############################################################################
     # Operation function
     
-
     def set_watt_out(self,val):
         logging.debug("write power out: " + str(val))
         self.lt232_IO(40,1,val) #does only return 0
@@ -148,12 +150,13 @@ class lt232:
 
     def read_watt_out(self):
         logging.debug("read power out")
-        rval = self.lt232_IO(107,0,0) #does only return 0
-        if(rval < 10): rval = 0 #check if lumentree is off <10 = off
-		return int(rval/10)     #return without decimals
+        rval = self.lt232_IO(107,0,0) 
+        rvali = int(rval/10)          #return without decimals
+        if(rvali < 10): rvali = 0 #check if lumentree is off <15 = off
+        return int(rvali)   
 
     def readDCvoltage(self):
         logging.debug("read AC voltage of lumentree")
         rval = self.lt232_IO(109,0,0)
-        logging.debug("DC voltage of lumentree: " + str(rval/10))
-        return (rval/10)
+        logging.debug("DC voltage of lumentree: " + str(rval))
+        return int(rval)

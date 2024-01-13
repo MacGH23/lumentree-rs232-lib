@@ -7,8 +7,7 @@
 
 # What is missing:
 
-# macGH 26.11.2023  Version 0.1.0
-# macGH 27.11.2023  Version 0.1.1: added watt read out register 107
+# macGH 26.11.2023  Version 0.2.3
 
 import os
 import sys
@@ -48,11 +47,12 @@ def mwcan_commands():
     print("        " + sys.argv[0] + " parameter and <value>")
     print("")
     print("       setwatt              -- set WATT outout")
+    print("       readwatt             -- read WATT outout")
     print("       vread                -- read DC voltage")
     print("       acvread              -- read AC voltage")
     print("       tempread             -- read power supply temperature")
     print("")
-    print("       Version 0.1.1 ")
+    print("       Version 0.1.0 ")
 
 
 #########################################
